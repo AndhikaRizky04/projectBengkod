@@ -15,8 +15,8 @@ class ObatController extends Controller
 
     public function edit($id)
     {
-        $obat = Obat::findOrFail($id);
-        return view('layouts.edit_obat', compact('obat'));
+        $obats = Obat::findOrFail($id);
+        return view('layouts.edit_obat', compact('obats'));
     }
 
     public function destroy($id)
