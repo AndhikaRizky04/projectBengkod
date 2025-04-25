@@ -18,14 +18,34 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
+    protected $fillable = [ //ini nanti digunakan untuk tabel yang hanya boleh diiisi
         'nama',
-        'alamat',
         'no_hp',
-        'email',
         'role',
+        'alamat',
+        'email',
         'password',
+        'google_id',
+        'google_token',
+        'google_refresh_token',
+
+
     ];
+
+
+    // menggunakan hasmany karena merupakan parent atau induk,karena id user direlasikan ke periksa
+    //relasi ke periksa sebagai pasien
+
+    public function pasien(): HasMany
+    {
+        return $this->hasMany(periksa::class, 'id_pasien');
+    }
+
+    //relasi ke periksa sebagai dokter
+    public function dokter(): HasMany
+    {
+        return $this->hasMany(periksa::class, 'id_dokter');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -48,14 +68,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function pasiens(): HasMany
-    {
-        return $this->hasMany(Periksa::class, 'id_pasien');
-    }
-    public function dokters(): HasMany
-    {
-        return $this->hasMany(Periksa::class, 'id_dokter');
     }
 }
