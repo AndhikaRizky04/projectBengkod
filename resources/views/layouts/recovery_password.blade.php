@@ -14,51 +14,71 @@
         <div class="login-logo">
             <a href="../../index2.html"><b>Admin</b>LTE</a>
         </div>
+
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
 
-                <form action="login.html" method="post">
+                <form action="{{ route('password.update') }}" method="POST">
+                    @csrf
+
+                    {{-- Token hidden dari route parameter --}}
+                    <input type="hidden" name="token" value="{{ $token }}">
+
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input type="hidden" name="email" class="form-control"
+                            value="{{ old('email', $email ?? '') }}"
+                            placeholder="Email" required autofocus>
+
+                    </div>
+
+
+
+                    {{-- Password baru --}}
+                    <div class="input-group mb-3">
+                        <input type="password" name="password" class="form-control" placeholder="Password baru" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
                     </div>
+
+                    {{-- Konfirmasi password --}}
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Confirm Password">
+                        <input type="password" name="password_confirmation" class="form-control" placeholder="Konfirmasi Password" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
                     </div>
+
+                    {{-- Tombol Submit --}}
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block">Change password</button>
+                            <button type="submit" class="btn btn-primary btn-block">Change Password</button>
                         </div>
-                        <!-- /.col -->
                     </div>
                 </form>
 
-                <p class="mt-3 mb-1">
-                    <a href="login.html">Login</a>
-                </p>
+
+
             </div>
             <!-- /.login-card-body -->
         </div>
     </div>
-    <!-- /.login-box -->
-
-    <!-- jQuery -->
-    <script src="../../plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="../../dist/js/adminlte.min.js"></script>
+    @include('layouts.lib.ext_js')
 </body>
 
 </html>
